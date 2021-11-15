@@ -2,6 +2,11 @@ from os import name, system
 from random import randint
 
 
+lower_bound = 1
+upper_bound = 100
+attempts = 10
+
+
 def clear_screen():
     if name == "nt":
         system("cls")
@@ -12,11 +17,12 @@ def clear_screen():
 if __name__ == "__main__":
     clear_screen()
 
-    number = randint(1, 100)
-    remaining_guesses = 10
+    number = randint(lower_bound, upper_bound)
+    remaining_guesses = attempts
 
-    print("I'm thinking of a number between 1 and 100.")
-    print("You have {} tries to guess my number.".format(remaining_guesses))
+    print("I'm thinking of a number between {} and {}.".format(lower_bound,
+        upper_bound))
+    print("You have {} tries to guess my number.".format(attempts))
     print("Can you guess what it is?")
 
     while remaining_guesses > 0:
