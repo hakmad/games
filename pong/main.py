@@ -53,7 +53,6 @@ class MainMenu(States):
     def update(self):
         self.start_game.check_hover()
 
-
     def draw(self, screen):
         screen.fill(black)
 
@@ -71,12 +70,29 @@ class GameOver(States):
     def setup(self):
         self.running = True
 
-        self.title = Text("Game Over!", screen_width // 2, 40, font_size=48)
+        self.title = Text("Game Over!", screen_width // 2, 40, font_size=32)
+
+        self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
+
+    def switch_to_game(self):
+        self.next = "game"
+        self.running = False
+
+    def cleanup(self):
+        del self.title
+
+    def handle_events(self, event):
+        self.restart.check_clicked(event)
+    
+    def update(self):
+        self.restart.check_hover()
 
     def draw(self, screen):
         screen.fill(black)
 
         self.title.draw(screen)
+
+        self.restart.draw(screen)
 
         pygame.display.flip()
 
