@@ -71,12 +71,12 @@ class GameOver(States):
     def setup(self):
         self.running = True
 
-        self.text = Text("GAME OVER", screen_width // 2, 40, font_size=48)
+        self.title = Text("Game Over!", screen_width // 2, 40, font_size=48)
 
     def draw(self, screen):
         screen.fill(black)
 
-        self.text.draw(screen)
+        self.title.draw(screen)
 
         pygame.display.flip()
 
