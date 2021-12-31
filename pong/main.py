@@ -70,7 +70,15 @@ class GameOver(States):
     def setup(self):
         self.running = True
 
+        if States.share["paddle_1_score"] > States.share["paddle_2_score"]:
+            self.winner_text = "Player 1 Won!"
+            self.winner_colour = "red"
+        else:
+            self.winner_text = "Player 2 Won!"
+            self.winner_colour = "blue"
+
         self.title = Text("Game Over!", screen_width // 2, 40, font_size=32)
+        self.winner = Text(self.winner_text, screen_width // 2, screen_height // 2, font_colour=self.winner_colour)
 
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
 
@@ -79,7 +87,7 @@ class GameOver(States):
         self.running = False
 
     def cleanup(self):
-        del self.title
+        del self.title, self.winner
 
     def handle_events(self, event):
         self.restart.check_clicked(event)
@@ -91,6 +99,7 @@ class GameOver(States):
         screen.fill(black)
 
         self.title.draw(screen)
+        self.winner.draw(screen)
 
         self.restart.draw(screen)
 
