@@ -123,8 +123,8 @@ class Game(States):
         self.paddles = [self.paddle_1, self.paddle_2]
 
         self.ball = Ball()
-        self.ball.dx = random.choice((-5, 5))
-        self.ball.dy = random.choice((-5, 5))
+        self.ball.dx = random.choice((-5, -6, -7, 5, 6, 7))
+        self.ball.dy = random.choice((-5, -6, -7, 5, 6, 7))
         
         self.sprites = pygame.sprite.Group()
         self.sprites.add(self.paddle_1)
@@ -163,14 +163,14 @@ class Game(States):
             if not(self.ball.rect.colliderect(paddle.rect)) and self.paddle_hit:
                 if (self.paddle_hit_count % 3) == 0:
                     if self.ball.dx > 0:
-                        self.ball.dx += random.randint(0, 2)
+                        self.ball.dx += random.randint(0, 3)
                     else:
-                        self.ball.dx -= random.randint(0, 2)
+                        self.ball.dx -= random.randint(0, 3)
     
                     if self.ball.dy > 0:
-                        self.ball.dy += random.randint(0, 2)
+                        self.ball.dy += random.randint(0, 3)
                     else:
-                        self.ball.dy -= random.randint(0, 2)
+                        self.ball.dy -= random.randint(0, 3)
     
                 self.paddle_hit = False
                 self.paddle_hit_count += 1
@@ -179,15 +179,15 @@ class Game(States):
             self.paddle_1.score += 1
             self.paddle_1_score.update_text(str(self.paddle_1.score))
             self.reset_sprites()
-            self.ball.dx = -5
-            self.ball.dy = random.choice((-5, 5))
+            self.ball.dx = random.choice((-5, -6, -7))
+            self.ball.dy = random.choice((-5, -6, -7, 5, 6, 7))
     
         if self.ball.rect.x <= 0:
             self.paddle_2.score += 1
             self.paddle_2_score.update_text(str(self.paddle_2.score))
             self.reset_sprites()
-            self.ball.dx = 5
-            self.ball.dy = random.choice((-5, 5))
+            self.ball.dx = random.choice((5, 6, 7))
+            self.ball.dy = random.choice((-5, -6, -7, 5, 6, 7))
 
         if self.paddle_1.score >= 11 or self.paddle_2.score >= 11:
             States.share["paddle_1_score"] = self.paddle_1.score
