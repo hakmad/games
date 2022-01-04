@@ -80,7 +80,12 @@ class GameOver(States):
         self.title = Text("Game Over!", screen_width // 2, 40, font_size=32)
         self.winner = Text(self.winner_text, screen_width // 2, screen_height // 2, font_colour=self.winner_colour)
 
+        self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
+
+    def switch_to_main_menu(self):
+        self.next = "main menu"
+        self.running = False
 
     def switch_to_game(self):
         self.next = "game"
@@ -90,9 +95,11 @@ class GameOver(States):
         del self.title, self.winner
 
     def handle_events(self, event):
+        self.main_menu.check_clicked(event)
         self.restart.check_clicked(event)
     
     def update(self):
+        self.main_menu.check_hover()
         self.restart.check_hover()
 
     def draw(self, screen):
@@ -101,6 +108,7 @@ class GameOver(States):
         self.title.draw(screen)
         self.winner.draw(screen)
 
+        self.main_menu.draw(screen)
         self.restart.draw(screen)
 
         pygame.display.flip()
@@ -249,13 +257,13 @@ if __name__ == "__main__":
     pygame.init()
     
     state_dict = {
-            "mainmenu": MainMenu(),
+            "main menu": MainMenu(),
             "game": Game(),
             "game over": GameOver()
             }
     
     app = Control()
-    app.setup(state_dict, "mainmenu")
+    app.setup(state_dict, "main menu")
     app.main_loop()
     
     pygame.quit()
