@@ -38,7 +38,7 @@ class MainMenu(States):
 
         self.title = Text("Pong", screen_width // 2, 40, font_size=32)
 
-        self.start_game = Button("Start Game", self.switch_to_game, screen_width // 2 - 50, 100, 100, 20)
+        self.start_game = Button("Start Game", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
 
     def switch_to_game(self):
         self.next = "game"
