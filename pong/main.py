@@ -39,19 +39,26 @@ class MainMenu(States):
         self.title = Text("Pong", screen_width // 2, 40, font_size=32)
 
         self.start_game = Button("Start Game", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
+        self.exit_game = Button("Exit Game", self.exit, screen_width // 2 - 75, 150, 150, 20)
 
     def switch_to_game(self):
         self.next = "game"
         self.running = False
 
+    def exit(self):
+        self.next = None
+        self.running = False
+    
     def cleanup(self):
         del self.title
-
+    
     def handle_events(self, event):
         self.start_game.check_clicked(event)
+        self.exit_game.check_clicked(event)
 
     def update(self):
         self.start_game.check_hover()
+        self.exit_game.check_hover()
 
     def draw(self, screen):
         screen.fill(black)
@@ -59,6 +66,7 @@ class MainMenu(States):
         self.title.draw(screen)
 
         self.start_game.draw(screen)
+        self.exit_game.draw(screen)
 
         pygame.display.flip()
 
@@ -239,11 +247,14 @@ class Control:
             self.change_state()
 
     def change_state(self):
-        new_state = self.current_state.next
-        self.current_state.cleanup()
-        self.current_state = self.state_dict[new_state]
-        self.current_state.setup()
-
+        try:
+            new_state = self.current_state.next
+            self.current_state.cleanup()
+            self.current_state = self.state_dict[new_state]
+            self.current_state.setup()
+        except KeyError:
+            self.running = False
+    
     def main_loop(self):
         while self.running:
             self.clock.tick(fps)
