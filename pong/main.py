@@ -49,9 +49,6 @@ class MainMenu(States):
         self.next = None
         self.running = False
     
-    def cleanup(self):
-        del self.title
-    
     def handle_events(self, event):
         self.start_game.check_clicked(event)
         self.exit_game.check_clicked(event)
