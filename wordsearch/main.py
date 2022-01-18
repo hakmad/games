@@ -26,6 +26,7 @@ grid_size = 14
 
 
 def clear_screen():
+    """Clear the terminal by issuing system commands."""
     if name == "nt":
         system("cls")
     else:
@@ -34,6 +35,17 @@ def clear_screen():
 
 def select_words(min_word_length, max_word_length, number_of_words,
         word_file):
+    """Select words from a word file.
+
+    Arguments:
+    min_word_length (int) - minimum word length to select.
+    max_word_length (int) - maximum word length to select.
+    number_of_words (int) - number of words to select.
+    word_file (str) - file name of file containing words to select.
+
+    Returns:
+    selected_words (list) - list of words.
+    """
     selected_words = []
 
     with(open(word_file, "r")) as file:
@@ -50,6 +62,16 @@ def select_words(min_word_length, max_word_length, number_of_words,
 
 
 def make_wordsearch(words, grid_width, grid_height):
+    """Create a word search based on a set of words and some sizes.
+
+    Arguments:
+    words (list) - list of words.
+    grid_width (int) - width of wordsearch grid.
+    grid_height (int) - height of wordsearch grid.
+
+    Returns:
+    grid (str) - a wordsearch grid.
+    """
     grid = [["" for x in range(grid_size)] for y in range(grid_size)]
 
     for word in words:
@@ -111,12 +133,22 @@ def make_wordsearch(words, grid_width, grid_height):
 
 
 def pretty_print_words(words):
+    """Print words nicely.
+
+    Arguments:
+    words (list) - list of words to print.
+    """
     for i in range(0, len(words), 2):
         print("%-12s\t%11s" % (words[i], words[i + 1]))
     print()
 
 
 def pretty_print_wordsearch(grid):
+    """Print a wordsearch nicely.
+
+    Arguments:
+    grid (str) - a wordsearch grid.
+    """
     for row in grid:
         for letter in row:
             print(letter, end=" ")
