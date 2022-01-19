@@ -2,6 +2,8 @@ from os import name, system
 from random import choice, randint
 
 
+# Various settings.
+# Change these to adjust wordsearch output.
 alphabet_length = 26
 
 directions = [
@@ -48,14 +50,18 @@ def select_words(min_word_length, max_word_length, number_of_words,
     """
     selected_words = []
 
+    # Open file and get list of all words.
     with(open(word_file, "r")) as file:
         words = file.read().splitlines()
 
+    # Repeat for as many number of words needed.
     for i in range(number_of_words):
+        # Select random word from list of words.
         word = choice(words)
         while not(min_word_length <= len(word) <= max_word_length):
             word = choice(words)
 
+        # Add selected word to word list.
         selected_words.append(word.upper())
 
     return selected_words
@@ -72,15 +78,19 @@ def make_wordsearch(words, grid_width, grid_height):
     Returns:
     grid (str) - a wordsearch grid.
     """
+    # Create empty grid.
     grid = [["" for x in range(grid_size)] for y in range(grid_size)]
 
+    # For every word.
     for word in words:
         word_length = len(word)
 
         placed = False
         placeable = False
 
+        # While word hasn't been added to grid.
         while not placed:
+            # Check if word can be placed in grid.
             if not placeable:
                 start_x = randint(0, grid_width - 1)
                 start_y = randint(0, grid_height - 1)
@@ -94,8 +104,10 @@ def make_wordsearch(words, grid_width, grid_height):
 
             if not(0 <= end_x <= grid_width - 1) or \
                 not(0 <= end_y <= grid_height - 1):
+                # Word won't fit, stop.
                 placeable = False
             else:
+                # Check if grid areas have any characters already in them.
                 for i in range(word_length):
                     current_letter = word[i]
                     
@@ -106,10 +118,12 @@ def make_wordsearch(words, grid_width, grid_height):
 
                     if not(len(grid_letter) == 0):
                         if not(grid_letter == current_letter):
+                            # Word can't be placed, stop.
                             placeable = False
                             break
 
                 if placeable:
+                    # Word can be put on wordsearch, add it.
                     for i in range(word_length):
                         current_letter = word[i]
 
@@ -120,6 +134,7 @@ def make_wordsearch(words, grid_width, grid_height):
 
                     placed = True
 
+    # Fill grid with random letters.
     for y in range(len(grid)):
         row = grid[y]
 
@@ -128,7 +143,8 @@ def make_wordsearch(words, grid_width, grid_height):
 
             if len(grid_letter) == 0:
                 grid[x][y] = chr(randint(0, alphabet_length - 1) + ord("A"))
-
+    
+    #
     return grid
 
 
@@ -156,12 +172,16 @@ def pretty_print_wordsearch(grid):
     print()
 
 
+# Main program.
 if __name__ == "__main__":
+    # Clear screen.
     clear_screen()
 
+    # Select words and create wordsearch.
     words = select_words(min_word_length, max_word_length, number_of_words,
             word_file)
     wordsearch = make_wordsearch(words, grid_size, grid_size)
 
+    # Show wordsearch and words.
     pretty_print_wordsearch(wordsearch)
     pretty_print_words(words)
