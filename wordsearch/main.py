@@ -143,8 +143,7 @@ def make_wordsearch(words, grid_width, grid_height):
 
             if len(grid_letter) == 0:
                 grid[x][y] = chr(randint(0, alphabet_length - 1) + ord("A"))
-    
-    #
+
     return grid
 
 
