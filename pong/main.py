@@ -1,3 +1,5 @@
+"""Main program."""
+
 import pygame
 import random
 
@@ -8,32 +10,59 @@ from sprites import *
 
 
 class States:
+    """Class to represent a state.
+
+    Methods are meant to be overridden.
+
+    Attributes:
+    share (dict) - a dictionary that is shared across all instances of 
+    the States class.
+    running (bool) - flag to check if the state is running.
+    next (str) - name of the next state to transition to.
+    """
     share = {}
     def __init__(self):
+        """Initialise the new state."""
         self.running = True
         self.next = None
 
     def setup(self):
+        """Setup the state."""
         pass
     
     def cleanup(self):
+        """Cleanup after the state."""
         pass
 
     def handle_events(self, event):
+        """Handle input and events for the state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
         pass
 
     def update(self):
+        """Update the state."""
         pass
 
     def draw(self, screen):
+        """Draw state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
         pass
 
 
 class MainMenu(States):
+    """Main menu state."""
     def __init__(self):
+        """Initialise the new main menu state."""
         States.__init__(self)
 
     def setup(self):
+        """Setup the main menu state."""
         self.running = True
 
         self.title = Text("Pong", screen_width // 2, 40, font_size=32)
@@ -42,22 +71,35 @@ class MainMenu(States):
         self.exit_game = Button("Exit Game", self.exit, screen_width // 2 - 75, 150, 150, 20)
 
     def switch_to_game(self):
+        """Switch the current state to the game state."""
         self.next = "game"
         self.running = False
 
     def exit(self):
+        """Exit the game."""
         self.next = None
         self.running = False
     
     def handle_events(self, event):
+        """Handle input and events for the main menu state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
         self.start_game.check_clicked(event)
         self.exit_game.check_clicked(event)
 
     def update(self):
+        """Update the main menu state."""
         self.start_game.check_hover()
         self.exit_game.check_hover()
 
     def draw(self, screen):
+        """Draw the main menu state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
         screen.fill(black)
 
         self.title.draw(screen)
@@ -69,12 +111,16 @@ class MainMenu(States):
 
 
 class GameOver(States):
+    """Game over state."""
     def __init__(self):
+        """Initialise the new game over state."""
         States.__init__(self)
 
     def setup(self):
+        """Setup the game over state."""
         self.running = True
 
+        # Check who won.
         if States.share["paddle_1_score"] > States.share["paddle_2_score"]:
             self.winner_text = "Player 1 Won!"
             self.winner_colour = "red"
@@ -89,25 +135,39 @@ class GameOver(States):
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
 
     def switch_to_main_menu(self):
+        """Switch the current state to the main menu state."""
         self.next = "main menu"
         self.running = False
 
     def switch_to_game(self):
+        """Switch the current state to the game state."""
         self.next = "game"
         self.running = False
 
     def cleanup(self):
+        """Cleanup after the game over state."""
         del self.title, self.winner
 
     def handle_events(self, event):
+        """Handle input and events for the game over state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
         self.main_menu.check_clicked(event)
         self.restart.check_clicked(event)
     
     def update(self):
+        """Update the game over state."""
         self.main_menu.check_hover()
         self.restart.check_hover()
 
     def draw(self, screen):
+        """Draw the game over state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
         screen.fill(black)
 
         self.title.draw(screen)
