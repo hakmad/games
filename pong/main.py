@@ -180,10 +180,13 @@ class GameOver(States):
 
 
 class Game(States):
+    """Game state."""
     def __init__(self):
+        """Initialise the new game state."""
         States.__init__(self)
 
     def setup(self):
+        """Setup the game state."""
         self.running = True
         self.next = "game over"
 
@@ -208,17 +211,20 @@ class Game(States):
         self.paddle_hit_count = 0
 
     def cleanup(self):
+        """Cleanup after the game state."""
         del self.paddle_1, self.paddle_2, self.ball
         del self.sprites, self.paddles
         del self.paddle_1_score, self.paddle_2_score
 
     def reset_sprites(self):
+        """Reset the paddle and ball sprites."""
         self.paddle_hit_count = 0
         self.ball.reset()
         for paddle in self.paddles:
             paddle.reset()
 
     def update(self):
+        """Update the game state."""
         self.sprites.update()
     
         for paddle in self.paddles:
@@ -269,6 +275,11 @@ class Game(States):
             self.running = False
 
     def draw(self, screen):
+        """Draw the game state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
         screen.fill(black)
     
         pygame.draw.line(screen, white, (screen_width // 2, 0), (screen_width // 2, screen_height), 5)
@@ -282,7 +293,17 @@ class Game(States):
 
 
 class Control:
+    """Class used to control program and manage states.
+
+    Attributes:
+    screen (pygame.Surface) - screen to draw to.
+    clock (pygame.time.Clock - clock to track time.
+    running (bool) - flag to check if program is running.
+    state_dict (dict) - dictionary containing states and their names.
+    current_state (str) - name of current state.
+    """
     def __init__(self):
+        """Initialise the new control object."""
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.clock = pygame.time.Clock()
         self.running = True
@@ -290,11 +311,13 @@ class Control:
         self.current_state = None
 
     def setup(self, state_dict, start_state):
+        """Setup the control object."""
         self.state_dict = state_dict
         self.current_state = self.state_dict[start_state]
         self.current_state.setup()
 
     def handle_events(self):
+        """Handle events for the control object and the current state."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -304,6 +327,7 @@ class Control:
             self.change_state()
 
     def change_state(self):
+        """Change the state to the next state."""
         try:
             new_state = self.current_state.next
             self.current_state.cleanup()
@@ -313,6 +337,7 @@ class Control:
             self.running = False
     
     def main_loop(self):
+        """Perform main loop."""
         while self.running:
             self.clock.tick(fps)
             self.handle_events()
