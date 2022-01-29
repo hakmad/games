@@ -1,8 +1,13 @@
-# Guess My Number
+# Pong
 
 Written in: Python.
 
 Simple Pong game.
+
+## Requirements
+
+Requires:
+- `pygame` >= 2.0
 
 ## Running
 
