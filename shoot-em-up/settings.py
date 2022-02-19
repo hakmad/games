@@ -1,8 +1,8 @@
 """Settings for game."""
 
 # Display settings.
-screen_width = 960
-screen_height = 540
+screen_width = 540
+screen_height = 960
 fps = 60
 
 # Colours.
