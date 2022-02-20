@@ -54,6 +54,69 @@ class States:
         pass
 
 
+class MainMenu(States):
+    """Main menu state."""
+    def __init__(self):
+        """Initialise the main menu state."""
+        States.__init__(self)
+
+    def setup(self):
+        """Setup the main menu state."""
+        self.running = True
+
+        # Create the title textbox.
+        self.title = Text("Shoot 'Em Up", screen_width // 2, 40, font_size=32)
+
+        # Create navigation buttons.
+        self.start_game = Button("Start", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
+        self.exit_game = Button("Exit", self.exit, screen_width // 2 - 75, 150, 150, 20)
+
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
+
+    def exit(self):
+        """Exit the game."""
+        self.next = None
+        self.running = False
+
+    def handle_events(self, event):
+        """Handle input and events for the main menu state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
+        # Check if buttons have been clicked.
+        self.start_game.check_clicked(event)
+        self.exit_game.check_clicked(event)
+
+    def update(self):
+        """Update the main menu state."""
+        # Check if buttons have been hovered over.
+        self.start_game.check_hover()
+        self.exit_game.check_hover()
+
+    def draw(self, screen):
+        """Draw the main menu state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
+        # Fill the screen with black.
+        screen.fill(black)
+
+        # Draw the title textbox to the screen.
+        self.title.draw(screen)
+
+        # Draw the navigation buttons to the screen.
+        self.start_game.draw(screen)
+        self.exit_game.draw(screen)
+
+        # Update the display.
+        pygame.display.flip()
+
+
 class Control:
     """Class used to control program and manage states.
 
@@ -133,3 +196,22 @@ class Control:
 
             # Update the screen.
             pygame.display.flip()
+
+
+# Main program.
+if __name__ == "__main__":
+    # Setup PyGame.
+    pygame.init()
+
+    # Create state dictionary.
+    state_dict = {
+            "main menu": MainMenu(),
+            }
+
+    # Setup and start control object.
+    app = Control()
+    app.setup(state_dict, "main menu")
+    app.main_loop()
+
+    # Exit program.
+    pygame.quit()
