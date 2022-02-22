@@ -66,7 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface((self.width, self.height))
         self.image.fill(self.colour)
 
-        # Create rectangle to store the paddle.
+        # Create rectangle to store the player.
         self.rect = self.image.get_rect()
         self.rect.x = (screen_width // 2) - (self.width // 2)
         self.rect.y = screen_height - self.height - 10
@@ -94,3 +94,36 @@ class Player(pygame.sprite.Sprite):
         # Check if the player has contacted the left of the screen.
         if self.rect.x <= 0:
             self.rect.x = 0
+
+
+class Bullet(pygame.sprite.Sprite):
+    """Bullet sprite. Inherits from pygame.sprite.Sprite."""
+    def __init__(self, x, y):
+        """Initialise the new bullet."""
+        # Setup the underlying PyGame sprite.
+        pygame.sprite.Sprite.__init__(self)
+
+        # Set width, height and colour.
+        self.width = 10
+        self.height = 20
+        self.colour = blue
+
+        # Create surface to display bullet.
+        self.image = pygame.Surface((self.width, self.height))
+        self.image.fill(self.colour)
+
+        # Create rectangle to store the bullet.
+        self.rect = self.image.get_rect()
+        self.rect.x = x - (self.width // 2)
+        self.rect.y = y - self.height
+
+        # Set vector.
+        self.dy = -10
+
+    def update(self):
+        """Update the bullets position."""
+        self.rect.y += self.dy
+
+        # Check if the bullet has gone beyond the edge of the screen.
+        if self.rect.y - self.height < 0:
+            self.kill()
