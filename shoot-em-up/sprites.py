@@ -45,3 +45,52 @@ class Hostile(pygame.sprite.Sprite):
         if (self.rect.y > screen_height or 
                 self.rect.x >= screen_width - self.width or self.rect.x <= 0):
             self.reset()
+
+
+class Player(pygame.sprite.Sprite):
+    """Player sprite. Inherits from pygame.sprite.Sprite."""
+    def __init__(self):
+        """Initialise the new player."""
+        # Setup the underlying PyGame sprite.
+        pygame.sprite.Sprite.__init__(self)
+
+        # Set health.
+        self.health = 100
+
+        # Set width, height and colour.
+        self.width = 80
+        self.height = 40
+        self.colour = green
+
+        # Create surface to display player.
+        self.image = pygame.Surface((self.width, self.height))
+        self.image.fill(self.colour)
+
+        # Create rectangle to store the paddle.
+        self.rect = self.image.get_rect()
+        self.rect.x = (screen_width // 2) - (self.width // 2)
+        self.rect.y = screen_height - self.height - 10
+
+    def update(self):
+        """Update the players position."""
+        # Set vectors and get pressed keys.
+        self.dx = 0
+
+        keystates = pygame.key.get_pressed()
+
+        # Check the pressed keys and adjust vectors.
+        if keystates[pygame.K_RIGHT]:
+            self.dx = 10
+        elif keystates[pygame.K_LEFT]:
+            self.dx = -10
+
+        # Move the player according to the vector.
+        self.rect.x += self.dx
+
+        # Check if the player has contacted the right of the screen.
+        if self.rect.x >= screen_width - self.width:
+            self.rect.x = screen_width - self.width
+
+        # Check if the player has contacted the left of the screen.
+        if self.rect.x <= 0:
+            self.rect.x = 0
