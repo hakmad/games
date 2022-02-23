@@ -95,6 +95,14 @@ class Player(pygame.sprite.Sprite):
         if self.rect.x <= 0:
             self.rect.x = 0
 
+    def shoot(self):
+        """Shoot a bullet from the player.
+
+        Returns:
+        (Bullet) - the bullet that has been shot.
+        """
+        return Bullet(self.rect.x + (self.width // 2), self.rect.y)
+
 
 class Bullet(pygame.sprite.Sprite):
     """Bullet sprite. Inherits from pygame.sprite.Sprite."""
