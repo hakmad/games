@@ -117,6 +117,62 @@ class MainMenu(States):
         pygame.display.flip()
 
 
+class Game(States):
+    """Game state."""
+    def __init__(self):
+        """Initialise the game state."""
+        States.__init__(self)
+
+    def setup(self):
+        """Setup the main menu state."""
+        self.running = True
+
+        # Create the main sprite groups.
+        self.sprites = pygame.sprite.Group()
+        self.hostiles = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
+
+        # Create the player and hostiles.
+        self.player = Player()
+        self.sprites.add(self.player)
+
+        for i in range(8):
+            hostile = Hostile()
+            self.sprites.add(hostile)
+            self.hostiles.add(hostile)
+
+    def handle_events(self, event):
+        """Handle input and events for the game state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
+        # Check if spacebar has been pressed.
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            bullet = self.player.shoot()
+            self.sprites.add(bullet)
+            self.bullets.add(bullet)
+
+    def update(self):
+        """Update the game state."""
+        self.sprites.update()
+
+    def draw(self, screen):
+        """Draw the game state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
+        # Fill the screen with black.
+        screen.fill(black)
+
+        # Draw the sprites to the screen.
+        self.sprites.draw(screen)
+
+        # Update the display.
+        pygame.display.flip()
+
+
 class Control:
     """Class used to control program and manage states.
 
@@ -206,6 +262,7 @@ if __name__ == "__main__":
     # Create state dictionary.
     state_dict = {
             "main menu": MainMenu(),
+            "game": Game(),
             }
 
     # Setup and start control object.
