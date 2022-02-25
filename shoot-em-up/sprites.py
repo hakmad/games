@@ -54,7 +54,8 @@ class Player(pygame.sprite.Sprite):
         # Setup the underlying PyGame sprite.
         pygame.sprite.Sprite.__init__(self)
 
-        # Set health.
+        # Set score and health.
+        self.score = 0
         self.health = 100
 
         # Set width, height and colour.
