@@ -137,9 +137,7 @@ class Game(States):
         self.sprites.add(self.player)
 
         for i in range(8):
-            hostile = Hostile()
-            self.sprites.add(hostile)
-            self.hostiles.add(hostile)
+            self.new_hostile()
 
     def handle_events(self, event):
         """Handle input and events for the game state.
@@ -165,9 +163,7 @@ class Game(States):
             self.player.score += collision.width
 
             # Create new hostile.
-            hostile = Hostile()
-            self.sprites.add(hostile)
-            self.hostiles.add(hostile)
+            self.new_hostile()
 
         # Check to see if a hostile hit the player.
         collisions = pygame.sprite.spritecollide(self.player, self.hostiles, True)
@@ -176,13 +172,17 @@ class Game(States):
             self.player.health -= collision.width
 
             # Create new hostile.
-            hostile = Hostile()
-            self.sprites.add(hostile)
-            self.hostiles.add(hostile)
+            self.new_hostile()
 
         # Check if player is still alive.
         if self.player.health < 0:
             self.running = False
+
+    def new_hostile():
+        """Create a new hostile and add it to the relevant groups."""
+        hostile = Hostile()
+        self.sprites.add(hostile)
+        self.hostiles.add(hostile)
 
     def draw(self, screen):
         """Draw the game state to the screen.
