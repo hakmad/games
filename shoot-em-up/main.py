@@ -139,6 +139,10 @@ class Game(States):
         for i in range(8):
             self.new_hostile()
 
+        # Create textboxes for showing health and score.
+        self.player_score = Text("Score: " + str(self.player.score), 60, 20)
+        self.player_health = Text("Health: " + str(self.player.health), screen_width - 60, 20)
+
     def handle_events(self, event):
         """Handle input and events for the game state.
 
@@ -162,6 +166,9 @@ class Game(States):
             # Increase player score.
             self.player.score += collision.width
 
+            # Update score textbox.
+            self.player_score.update_text("Score: " + str(self.player.score))
+
             # Create new hostile.
             self.new_hostile()
 
@@ -171,6 +178,9 @@ class Game(States):
             # Decrease player health.
             self.player.health -= collision.width
 
+            # Update health textbox.
+            self.player_health.update_text("Health: " + str(self.player.health))
+
             # Create new hostile.
             self.new_hostile()
 
@@ -178,7 +188,7 @@ class Game(States):
         if self.player.health < 0:
             self.running = False
 
-    def new_hostile():
+    def new_hostile(self):
         """Create a new hostile and add it to the relevant groups."""
         hostile = Hostile()
         self.sprites.add(hostile)
@@ -195,6 +205,10 @@ class Game(States):
 
         # Draw the sprites to the screen.
         self.sprites.draw(screen)
+
+        # Draw the textboxes to the screen.
+        self.player_score.draw(screen)
+        self.player_health.draw(screen)
 
         # Update the display.
         pygame.display.flip()
