@@ -71,6 +71,11 @@ class MainMenu(States):
         self.start_game = Button("Start", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
         self.exit_game = Button("Exit", self.exit, screen_width // 2 - 75, 150, 150, 20)
 
+    def cleanup(self):
+        """Cleanup after main menu state."""
+        del self.title
+        del self.start_game, self.exit_game
+
     def switch_to_game(self):
         """Switch the current state to the game state."""
         self.next = "game"
@@ -143,6 +148,12 @@ class Game(States):
         # Create textboxes for showing health and score.
         self.player_score = Text("Score: " + str(self.player.score), 60, 20)
         self.player_health = Text("Health: " + str(self.player.health), screen_width - 60, 20)
+
+    def cleanup(self):
+        """Cleanup after game state."""
+        del self.sprites, self.hostiles, self.bullets
+        del self.player
+        del self.player_score, self.player_health
 
     def handle_events(self, event):
         """Handle input and events for the game state.
