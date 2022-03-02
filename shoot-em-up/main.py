@@ -76,16 +76,6 @@ class MainMenu(States):
         del self.title
         del self.start_game, self.exit_game
 
-    def switch_to_game(self):
-        """Switch the current state to the game state."""
-        self.next = "game"
-        self.running = False
-
-    def exit(self):
-        """Exit the game."""
-        self.next = None
-        self.running = False
-
     def handle_events(self, event):
         """Handle input and events for the main menu state.
 
@@ -120,6 +110,16 @@ class MainMenu(States):
 
         # Update the display.
         pygame.display.flip()
+
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
+
+    def exit(self):
+        """Exit the game."""
+        self.next = None
+        self.running = False
 
 
 class Game(States):
@@ -204,12 +204,6 @@ class Game(States):
             # Stop the game state.
             self.running = False
 
-    def new_hostile(self):
-        """Create a new hostile and add it to the relevant groups."""
-        hostile = Hostile()
-        self.sprites.add(hostile)
-        self.hostiles.add(hostile)
-
     def draw(self, screen):
         """Draw the game state to the screen.
 
@@ -228,6 +222,12 @@ class Game(States):
 
         # Update the display.
         pygame.display.flip()
+
+    def new_hostile(self):
+        """Create a new hostile and add it to the relevant groups."""
+        hostile = Hostile()
+        self.sprites.add(hostile)
+        self.hostiles.add(hostile)
 
 
 class GameOver(States):
@@ -250,16 +250,6 @@ class GameOver(States):
         # Create navigation buttons.
         self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
-
-    def switch_to_main_menu(self):
-        """Switch the current state to the main menu state."""
-        self.next = "main menu"
-        self.running = False
-
-    def switch_to_game(self):
-        """Switch the current state to the game state."""
-        self.next = "game"
-        self.running = False
 
     def cleanup(self):
         """Cleanup after game over state."""
@@ -300,6 +290,16 @@ class GameOver(States):
 
         # Update the display.
         pygame.display.flip()
+
+    def switch_to_main_menu(self):
+        """Switch the current state to the main menu state."""
+        self.next = "main menu"
+        self.running = False
+
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
 
 
 class Control:
