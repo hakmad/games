@@ -71,17 +71,7 @@ class MainMenu(States):
         # Create navigation buttons.
         self.start_game = Button("Start Game", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
         self.exit_game = Button("Exit Game", self.exit, screen_width // 2 - 75, 150, 150, 20)
-
-    def switch_to_game(self):
-        """Switch the current state to the game state."""
-        self.next = "game"
-        self.running = False
-
-    def exit(self):
-        """Exit the game."""
-        self.next = None
-        self.running = False
-    
+   
     def handle_events(self, event):
         """Handle input and events for the main menu state.
 
@@ -117,6 +107,16 @@ class MainMenu(States):
         # Update the display.
         pygame.display.flip()
 
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
+
+    def exit(self):
+        """Exit the game."""
+        self.next = None
+        self.running = False
+ 
 
 class GameOver(States):
     """Game over state."""
@@ -145,16 +145,6 @@ class GameOver(States):
         # Create navigation buttons.
         self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
-
-    def switch_to_main_menu(self):
-        """Switch the current state to the main menu state."""
-        self.next = "main menu"
-        self.running = False
-
-    def switch_to_game(self):
-        """Switch the current state to the game state."""
-        self.next = "game"
-        self.running = False
 
     def cleanup(self):
         """Cleanup after the game over state."""
@@ -195,6 +185,16 @@ class GameOver(States):
 
         # Update the display.
         pygame.display.flip()
+
+    def switch_to_main_menu(self):
+        """Switch the current state to the main menu state."""
+        self.next = "main menu"
+        self.running = False
+
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
 
 
 class Game(States):
@@ -239,14 +239,6 @@ class Game(States):
         del self.paddle_1, self.paddle_2, self.ball
         del self.sprites, self.paddles
         del self.paddle_1_score, self.paddle_2_score
-
-    def reset_sprites(self):
-        """Reset the paddle and ball sprites."""
-        # Reset the paddles and balls.
-        self.paddle_hit_count = 0
-        self.ball.reset()
-        for paddle in self.paddles:
-            paddle.reset()
 
     def update(self):
         """Update the game state."""
@@ -337,6 +329,14 @@ class Game(States):
     
         # Update the display.
         pygame.display.flip()
+
+    def reset_sprites(self):
+        """Reset the paddle and ball sprites."""
+        # Reset the paddles and balls.
+        self.paddle_hit_count = 0
+        self.ball.reset()
+        for paddle in self.paddles:
+            paddle.reset()
 
 
 class Control:
