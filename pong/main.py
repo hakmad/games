@@ -116,85 +116,6 @@ class MainMenu(States):
         """Exit the game."""
         self.next = None
         self.running = False
- 
-
-class GameOver(States):
-    """Game over state."""
-    def __init__(self):
-        """Initialise the new game over state."""
-        States.__init__(self)
-
-    def setup(self):
-        """Setup the game over state."""
-        self.running = True
-
-        # Check who won.
-        if States.share["paddle_1_score"] > States.share["paddle_2_score"]:
-            # Player 1 (red paddle) won.
-            self.winner_text = "Player 1 Won!"
-            self.winner_colour = "red"
-        else:
-            # Player 2 (blue paddle) won.
-            self.winner_text = "Player 2 Won!"
-            self.winner_colour = "blue"
-
-        # Create title and winner textboxes.
-        self.title = Text("Game Over!", screen_width // 2, 40, font_size=32)
-        self.winner = Text(self.winner_text, screen_width // 2, screen_height // 2, font_colour=self.winner_colour)
-
-        # Create navigation buttons.
-        self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
-        self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
-
-    def cleanup(self):
-        """Cleanup after the game over state."""
-        del self.title, self.winner
-
-    def handle_events(self, event):
-        """Handle input and events for the game over state.
-
-        Arguments:
-        event (pygame.event.Event) - input/event to handle.
-        """
-        # Check if buttons have been clicked.
-        self.main_menu.check_clicked(event)
-        self.restart.check_clicked(event)
-    
-    def update(self):
-        """Update the game over state."""
-        # Check if buttons have been hovered over.
-        self.main_menu.check_hover()
-        self.restart.check_hover()
-
-    def draw(self, screen):
-        """Draw the game over state to the screen.
-
-        Arguments:
-        screen (pygame.Surface) - screen to draw to.
-        """
-        # Fill the screen with black.
-        screen.fill(black)
-
-        # Draw the title and winner textboxes to the screen.
-        self.title.draw(screen)
-        self.winner.draw(screen)
-
-        # Draw the navigation buttons to the screen.
-        self.main_menu.draw(screen)
-        self.restart.draw(screen)
-
-        # Update the display.
-        pygame.display.flip()
-
-    def switch_to_main_menu(self):
-        """Switch the current state to the main menu state."""
-        self.next = "main menu"
-        self.running = False
-
-    def switch_to_game(self):
-        """Switch the current state to the game state."""
-        self.next = "game"
-        self.running = False
 
 
 class Game(States):
@@ -337,6 +258,85 @@ class Game(States):
         self.ball.reset()
         for paddle in self.paddles:
             paddle.reset()
+
+
+class GameOver(States):
+    """Game over state."""
+    def __init__(self):
+        """Initialise the new game over state."""
+        States.__init__(self)
+
+    def setup(self):
+        """Setup the game over state."""
+        self.running = True
+
+        # Check who won.
+        if States.share["paddle_1_score"] > States.share["paddle_2_score"]:
+            # Player 1 (red paddle) won.
+            self.winner_text = "Player 1 Won!"
+            self.winner_colour = "red"
+        else:
+            # Player 2 (blue paddle) won.
+            self.winner_text = "Player 2 Won!"
+            self.winner_colour = "blue"
+
+        # Create title and winner textboxes.
+        self.title = Text("Game Over!", screen_width // 2, 40, font_size=32)
+        self.winner = Text(self.winner_text, screen_width // 2, screen_height // 2, font_colour=self.winner_colour)
+
+        # Create navigation buttons.
+        self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
+        self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
+
+    def cleanup(self):
+        """Cleanup after the game over state."""
+        del self.title, self.winner
+
+    def handle_events(self, event):
+        """Handle input and events for the game over state.
+
+        Arguments:
+        event (pygame.event.Event) - input/event to handle.
+        """
+        # Check if buttons have been clicked.
+        self.main_menu.check_clicked(event)
+        self.restart.check_clicked(event)
+    
+    def update(self):
+        """Update the game over state."""
+        # Check if buttons have been hovered over.
+        self.main_menu.check_hover()
+        self.restart.check_hover()
+
+    def draw(self, screen):
+        """Draw the game over state to the screen.
+
+        Arguments:
+        screen (pygame.Surface) - screen to draw to.
+        """
+        # Fill the screen with black.
+        screen.fill(black)
+
+        # Draw the title and winner textboxes to the screen.
+        self.title.draw(screen)
+        self.winner.draw(screen)
+
+        # Draw the navigation buttons to the screen.
+        self.main_menu.draw(screen)
+        self.restart.draw(screen)
+
+        # Update the display.
+        pygame.display.flip()
+
+    def switch_to_main_menu(self):
+        """Switch the current state to the main menu state."""
+        self.next = "main menu"
+        self.running = False
+
+    def switch_to_game(self):
+        """Switch the current state to the game state."""
+        self.next = "game"
+        self.running = False
 
 
 class Control:
