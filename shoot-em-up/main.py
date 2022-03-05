@@ -29,10 +29,6 @@ class States:
         """Setup the state."""
         pass
     
-    def cleanup(self):
-        """Cleanup after the state."""
-        pass
-
     def handle_events(self, event):
         """Handle input and events for the state.
 
@@ -70,11 +66,6 @@ class MainMenu(States):
         # Create navigation buttons.
         self.start_game = Button("Start", self.switch_to_game, screen_width // 2 - 75, 100, 150, 20)
         self.exit_game = Button("Exit", self.exit, screen_width // 2 - 75, 150, 150, 20)
-
-    def cleanup(self):
-        """Cleanup after main menu state."""
-        del self.title
-        del self.start_game, self.exit_game
 
     def handle_events(self, event):
         """Handle input and events for the main menu state.
@@ -148,12 +139,6 @@ class Game(States):
         # Create textboxes for showing health and score.
         self.player_score = Text("Score: " + str(self.player.score), 60, 20)
         self.player_health = Text("Health: " + str(self.player.health), screen_width - 60, 20)
-
-    def cleanup(self):
-        """Cleanup after game state."""
-        del self.sprites, self.hostiles, self.bullets
-        del self.player
-        del self.player_score, self.player_health
 
     def handle_events(self, event):
         """Handle input and events for the game state.
@@ -250,11 +235,6 @@ class GameOver(States):
         # Create navigation buttons.
         self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
-
-    def cleanup(self):
-        """Cleanup after game over state."""
-        del self.title, self.score
-        del self.main_menu, self.restart
 
     def handle_events(self, event):
         """Handle input and events for the game over state.
@@ -354,9 +334,6 @@ class Control:
             # Get next state.
             new_state = self.current_state.next
             
-            # Cleanup current state.
-            self.current_state.cleanup()
-
             # Get and setup next state.
             self.current_state = self.state_dict[new_state]
             self.current_state.setup()
