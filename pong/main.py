@@ -30,10 +30,6 @@ class States:
         """Setup the state."""
         pass
     
-    def cleanup(self):
-        """Cleanup after the state."""
-        pass
-
     def handle_events(self, event):
         """Handle input and events for the state.
 
@@ -155,12 +151,6 @@ class Game(States):
         self.paddle_hit = False
         self.paddle_hit_count = 0
 
-    def cleanup(self):
-        """Cleanup after the game state."""
-        del self.paddle_1, self.paddle_2, self.ball
-        del self.sprites, self.paddles
-        del self.paddle_1_score, self.paddle_2_score
-
     def update(self):
         """Update the game state."""
         # Update all the sprites.
@@ -223,10 +213,13 @@ class Game(States):
             self.ball.dx = random.choice((5, 6, 7))
             self.ball.dy = random.choice((-5, -6, -7, 5, 6, 7))
 
+        # Check if a player has won.
         if self.paddle_1.score >= 11 or self.paddle_2.score >= 11:
+            # Store scores in the shared dictionary.
             States.share["paddle_1_score"] = self.paddle_1.score
             States.share["paddle_2_score"] = self.paddle_2.score
 
+            # Stop running the game state.
             self.running = False
 
     def draw(self, screen):
@@ -287,10 +280,6 @@ class GameOver(States):
         # Create navigation buttons.
         self.main_menu = Button("Main Menu", self.switch_to_main_menu, screen_width // 2 - 75, screen_height - 100, 150, 20)
         self.restart = Button("Restart Game", self.switch_to_game, screen_width // 2 - 75, screen_height - 50, 150, 20)
-
-    def cleanup(self):
-        """Cleanup after the game over state."""
-        del self.title, self.winner
 
     def handle_events(self, event):
         """Handle input and events for the game over state.
@@ -391,9 +380,6 @@ class Control:
             # Get next state.
             new_state = self.current_state.next
             
-            # Cleanup current state.
-            self.current_state.cleanup()
-
             # Get and setup next state.
             self.current_state = self.state_dict[new_state]
             self.current_state.setup()
